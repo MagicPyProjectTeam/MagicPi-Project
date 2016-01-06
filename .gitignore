@@ -1,2 +1,3 @@
 tmpfiles/
 .idea/
+*.pyc
