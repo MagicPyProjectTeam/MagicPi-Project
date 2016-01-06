@@ -1,2 +1,2 @@
-import Example;
-__all__ = [Example,];
+import ExampleAction;
+__all__ = [ExampleAction, ];
