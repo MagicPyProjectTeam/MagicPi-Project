@@ -1,10 +1,15 @@
 import models;
 import inspect;
+from importlib import import_module;
 
 class Environment:
 
     # Classes statiques
-    statics = [];
+    statics = {};
+
+    # Imports
+    importList = {};
+
     # Variables outil
     debug = False;
 
@@ -13,11 +18,12 @@ class Environment:
 
     # initialise les classes statiques
     def initializeStatic(self,staticName):
-        self.statics[staticName] = self.getStatic(staticName);
+        self.statics[staticName] = self.getModel(staticName);
 
     # Retourne la class static
-    def getStatic(self,static):
-        print "Chargement de la class static :"+static;
+    def getStatic(self,staticName):
+        print "Chargement de la class static : "+staticName;
+        return self.statics[staticName];
 
     # Retourne un une instance du model voulu
     def getModel(self,modelName):
@@ -27,6 +33,10 @@ class Environment:
         modelClass = inspect.getmembers(getattr(models, modelName))[0][1]
         return modelClass(self);
 
+    def getImport(self,importName):
+        if(not importName in self.importList.keys()) :
+            self.importList[importName] = import_module(importName);
+        return self.importList[importName];
 
 
     # Methods : Execute l'action run des classes du module
@@ -44,6 +54,14 @@ class Environment:
         for name, obj in inspect.getmembers(import_name):
             if inspect.ismodule(obj):
                 if(self.debug):
-                    print "Lancement de runActions pour :"
+                    print "Lancemen   t de runActions pour :"
                     print(obj);
                 self.runActions(obj);
+
+    # On instancie une premiere fois les classes statiques
+    def setStatics(self):
+        list=[
+            'ExampleModel',
+        ];
+        for model in list :
+            self.initializeStatic(model);
