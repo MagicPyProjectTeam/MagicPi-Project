@@ -1,10 +1,15 @@
 import models;
 import inspect;
+from importlib import import_module;
 
 class Environment:
 
     # Classes statiques
     statics = {};
+
+    # Imports
+    importList = {};
+
     # Variables outil
     debug = False;
 
@@ -27,6 +32,12 @@ class Environment:
             print(modelName);
         modelClass = inspect.getmembers(getattr(models, modelName))[0][1]
         return modelClass(self);
+
+    def getImport(self,importName):
+        if(not importName in self.importList.keys()) :
+            self.importList[importName] = import_module(importName);
+        return self.importList[importName];
+
 
     # Methods : Execute l'action run des classes du module
     def runActions(self,module):
