@@ -9,4 +9,5 @@ me = singleton.SingleInstance();
 
 #Environment Loading
 env = Environment.Environment();
+env.setStatics();
 env.launchApplication(actions);
