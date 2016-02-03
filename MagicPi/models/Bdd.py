@@ -3,12 +3,14 @@ import sqlite3
 
 class Bdd:
 
+    # Initialization of connection to Database
     conn = sqlite3.connect('mpp.db')
     c = conn.cursor()
 
     def __init__(self, Environement):
         self.env = Environement;
 
+    # Check if a MAC address already exist in the Hosts table
     def checkMAC(self, mac):
 
         c = self.c
@@ -20,7 +22,8 @@ class Bdd:
         elif boolResult ==0:
             return False
 
-    def checkNET(self, ssid):
+    # Check if a SSID address already exist in the Networks table
+    def checkSSID(self, ssid):
 
         c = self.c
         c.execute("SELECT count(*) FROM Networks WHERE SSID = '{}'".format(ssid))
@@ -31,6 +34,7 @@ class Bdd:
         elif boolResult == 0:
             return False
 
+    # Insert in Database outputs from ARP action
     def arpInsertBDD(self, ip, mac, const):
 
         c = self.c
@@ -42,7 +46,6 @@ class Bdd:
             c.execute("INSERT INTO Hosts VALUES ('{}', '{}', '{}')".format(mac, ip, const))
             print("Adding {} device info".format(mac))
 
-obj = Bdd("arg a la con")
-obj.arpInsertBDD("192.168.1.42", "ff:ff:ff:ff:ff", "Cisco")
+obj = Bdd("hfyuf")
 Bdd.conn.commit()
 Bdd.conn.close()
