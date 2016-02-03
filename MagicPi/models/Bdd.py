@@ -46,6 +46,7 @@ class Bdd:
             c.execute("INSERT INTO Hosts VALUES ('{}', '{}', '{}')".format(mac, ip, const))
             print("Adding {} device info".format(mac))
 
-obj = Bdd("hfyuf")
+obj = Bdd("")
+obj.arpInsertBDD("192.168.1.42", "ff:ff:ff:ff:ff", "Cisco")
 Bdd.conn.commit()
 Bdd.conn.close()
