@@ -47,6 +47,5 @@ class Bdd:
             print("Adding {} device info".format(mac))
 
 obj = Bdd("")
-obj.arpInsertBDD("192.168.1.42", "ff:ff:ff:ff:ff", "Cisco")
 Bdd.conn.commit()
 Bdd.conn.close()
