@@ -1,2 +1,2 @@
-import ExampleModel;
-__all__ = [ExampleModel,]
+import ExampleModel, HostInformation;
+__all__ = [ExampleModel,HostInformation]

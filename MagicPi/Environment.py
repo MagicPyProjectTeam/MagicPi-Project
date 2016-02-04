@@ -61,7 +61,7 @@ class Environment:
     # On instancie une premiere fois les classes statiques
     def setStatics(self):
         list=[
-            'ExampleModel',
+            'HostInformation'
         ];
         for model in list :
             self.initializeStatic(model);
