@@ -20,7 +20,10 @@ class HostInformation:
 
     # Retourne les informations de l'interface
     def getInfoForInterface(self,interface):
-        return self.interfaces[interface][self.netIfaces.AF_INET];
+        try:
+            return self.interfaces[interface][self.netIfaces.AF_INET];
+        except:
+            return False
 
     #retourne le CIDR
     def getCidrFromIp(self,ip):
