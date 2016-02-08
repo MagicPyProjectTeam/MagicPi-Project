@@ -25,3 +25,10 @@ class HostInformation:
     #retourne le CIDR
     def getCidrFromIp(self,ip):
         return '/'+str('.'.join([bin(int(x)+256)[3:] for x in ip.split('.')]).count('1'));
+
+    # Retourne le gateWay de l'interface si possible, false sinon (default est une valeur possible)
+    def getGateWayForInterface(self,interface):
+        for gateway_ip, network_card, is_default in self.netIfaces.gateways()[self.netIfaces.AF_INET]:
+            if network_card == interface:
+                return gateway_ip
+        return False;
