@@ -1,0 +1,15 @@
+logique de l'application:
+
+- MainAction :
+	- ScanAction : (10min)
+		- Arp ping / host discovery
+		- If iteration==1 then insert into DB
+		- Else update DB
+		- ipidseq scan
+		- Update zombie status into DB
+		- If zombie && port open then (DB QUERY)
+		- Tcp syn scan all hosts with idle scan (zombie, port)
+	- MitmAction :
+		- ???
+
+	- LOOP()
