@@ -10,16 +10,16 @@ class Bdd:
     def __init__(self, Environement):
         self.env = Environement;
 
-    # Check if a MAC address already exist in the Hosts table
-    def checkMAC(self, mac):
+    # Check if a MAC address already exist in the Scan table
+    def checkIP(self, ip):
 
         c = self.c
-        c.execute("SELECT count (*) from Hosts WHERE MAC = '{}'".format(mac))
-        boolResult=(c.fetchone()[0])
+        c.execute("SELECT count (*) from Scan WHERE IP = '{}'".format(ip))
+        nb=(c.fetchone()[0])
 
-        if boolResult == 1:
+        if nb == 1:
             return True
-        elif boolResult ==0:
+        elif nb == 0:
             return False
 
     # Check if a SSID address already exist in the Networks table
@@ -27,11 +27,11 @@ class Bdd:
 
         c = self.c
         c.execute("SELECT count(*) FROM Networks WHERE SSID = '{}'".format(ssid))
-        boolResult=(c.fetchone()[0])
+        nb=(c.fetchone()[0])
 
-        if boolResult == 1:
+        if nb == 1:
             return True
-        elif boolResult == 0:
+        elif nb == 0:
             return False
 
     # Insert in Database outputs from ARP action
@@ -39,13 +39,20 @@ class Bdd:
 
         c = self.c
 
-        if self.checkMAC(mac):
-            c.execute("UPDATE Hosts SET IP='{}'".format(ip))
-            print("Updating {} device info".format(mac))
+        if self.checkIP(ip):
+            c.execute("UPDATE Scan SET IP='{}', MAC='{}', CONST='{}'".format(ip, mac, const))
+            print("Updating {} device info".format(ip))
         else:
-            c.execute("INSERT INTO Hosts VALUES ('{}', '{}', '{}')".format(mac, ip, const))
-            print("Adding {} device info".format(mac))
+            c.execute("INSERT INTO Scan (IP, MAC, CONST) VALUES ('{}', '{}', '{}')".format(ip, mac, const))
+            print("Adding {} device info".format(ip))
 
-obj = Bdd("")
+    def portInsertBDD(self, openports):
+
+        if openports == "":
+            self.c.execute("UPDATE Scan SET PORTS='{}' ZOMBIE='{}'".format('None', True))
+        else:
+            self.c.execute("UPDATE Scan SET PORTS='{}' ZOMBIE='{}'".format(openports, True))
+
+obj = Bdd('')
 Bdd.conn.commit()
 Bdd.conn.close()
