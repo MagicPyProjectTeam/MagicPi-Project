@@ -1,2 +1,3 @@
-import ExampleAction;
-__all__ = [ExampleAction, ];
+import ScanAction
+
+__all__ = [ScanAction, ];
