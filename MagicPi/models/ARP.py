@@ -1,3 +1,6 @@
+import logging
+logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
+
 class ARPModel:
 
     env = None;
@@ -5,9 +8,10 @@ class ARPModel:
     def __init__(self,Environement):
         self.env = Environement;
 
-    def PerformArpPing(self, interface, range):
+    def ARP_Ping(self, interface, range):
         # import scapy
-        scap = self.env.getImport('scapy.all');
+        scap = self.env.getImport('scapy.all')
+        scap.conf.verb = 0
         
         # charge un tableau avec les prefix mac  de nmap
         filename = '/usr/share/nmap/nmap-mac-prefixes'
@@ -18,8 +22,8 @@ class ARPModel:
                 vals[line[:6]] = line[7:-1]
 
         # On envoie les packets
-        conf.verb = 0
-        ans, unans = scap.srp(scap.Ether(dst="ff:ff:ff:ff:ff:ff")/scap.ARP(pdst = range), timeout = 2, iface=interface, inter=0.25)
+        scap.conf.verb = 0
+        ans, unans = scap.srp(scap.Ether(dst="ff:ff:ff:ff:ff:ff")/scap.ARP(pdst=range), timeout=0.1, iface=interface, inter=0.1)
 
         #initialise un tableau de retour
         array = []
@@ -29,7 +33,7 @@ class ARPModel:
             mac = rcv.sprintf(r"%Ether.src%").replace(":", "")[:6].upper()
             dico = {}
             dico["ip"] = rcv.sprintf(r"%ARP.psrc%")
-            dico["mac"] = rcv.sprintf(r"%ARP.psrc%")
+            dico["mac"] = rcv.sprintf(r"%Ether.src%")
             dico["const"] = "(%s)" % vals[mac] if mac in vals else 'not found'
             array.append(dico)
         return array

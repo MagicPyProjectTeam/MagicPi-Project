@@ -14,7 +14,7 @@ class Environment:
     debug = False;
 
     def __init__(self):
-        print "Chargement de l'environement"
+        print "[*] Environment loaded!"
 
     # initialise les classes statiques
     def initializeStatic(self,staticName):
@@ -54,7 +54,7 @@ class Environment:
         for name, obj in inspect.getmembers(import_name):
             if inspect.ismodule(obj):
                 if(self.debug):
-                    print "Lancemen   t de runActions pour :"
+                    print "Lancement de runActions pour :"
                     print(obj);
                 self.runActions(obj);
 
@@ -62,6 +62,8 @@ class Environment:
     def setStatics(self):
         list=[
             'ExampleModel',
+            'ARP',
+            'TCP'
         ];
         for model in list :
             self.initializeStatic(model);
