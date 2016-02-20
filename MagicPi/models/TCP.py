@@ -12,7 +12,7 @@ class TCPModel:
 
     # retourne un array avec le port et un bool sur l'etat du port, ex: arr = TCP_Syn_Scan(53), arr[0]=53, arr[1]=True
     def TCP_Syn_Scan(self, ip, ports):
-        pool =  mp.ProcessingPool(nodes=4)
+        pool =  mp.ProcessingPool(nodes=8)
         func = partial(self.syn_scan_port, ip)
         result = pool.map(func, ports)
         return result
