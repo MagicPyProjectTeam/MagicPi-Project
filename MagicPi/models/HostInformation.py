@@ -1,16 +1,17 @@
 class HostInformation:
-    env = None;
-    interfaces = {};
-    netIfaces = None;
+    env = None
+    interfaces = {}
+    netIfaces = None
+    ifaceUsed = None
 
-    #Constructeur de la classe, on appel loadInformation
+    # Constructeur de la classe, on appel loadInformation
     def __init__(self,Environement):
         self.env = Environement;
         self.netIfaces = Environement.getImport("netifaces");
         self.loadInformation();
 
     # Recupere, si possible, l'ip publique lie a l'interface donnee
-    def getPublicIp(self,interface):
+    def getPublicIp(self, interface):
         # On recupere les import
         PyCurl = self.env.getImport('pycurl');
         stringIo = self.env.getImport('StringIO')
@@ -51,12 +52,15 @@ class HostInformation:
             return False
 
     #retourne le CIDR
-    def getCidrFromIp(self,ip):
+    def getCidrFromIp(self, ip):
         return '/'+str('.'.join([bin(int(x)+256)[3:] for x in ip.split('.')]).count('1'));
+
+    def getSubnet(self, ip, cidr):
+        ipCalc = self.env.getImport('ipcalc')
+        return str(ipCalc.Network('%s%s' % (ip, cidr)).network())
 
     # Retourne le gateWay de l'interface si possible, false sinon (default est une valeur possible)
     def getGateWayForInterface(self,interface):
         for gateway_ip, network_card, is_default in self.netIfaces.gateways()[self.netIfaces.AF_INET]:
             if network_card == interface:
                 return gateway_ip
-        return False;

@@ -14,7 +14,7 @@ class Environment:
     debug = False;
 
     def __init__(self):
-        print ("[*] Environment loaded!")
+        print ("[*] Environment loaded!\n")
 
     # initialise les classes statiques
     def initializeStatic(self,staticName):
@@ -43,7 +43,7 @@ class Environment:
     def runActions(self,module):
         for name, obj in inspect.getmembers(module):
             if inspect.isclass(obj):
-                if self.debug :
+                if self.debug:
                     print("Run de :")
                     print (obj)
                 actionClass = obj(self)
@@ -62,7 +62,6 @@ class Environment:
     def setStatics(self):
         list=[
             'HostInformation',
-            'ExampleModel',
             'ARP',
             'TCP',
             'BDD'

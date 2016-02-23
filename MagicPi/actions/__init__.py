@@ -1,3 +1,4 @@
 import ScanAction
+import HostAction
 
-__all__ = [ScanAction, ];
+__all__ = [ScanAction, HostAction, ];
