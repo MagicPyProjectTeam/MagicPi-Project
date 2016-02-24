@@ -2,3 +2,6 @@ scapy
 tendo
 netifaces
 git+https://github.com/uqfoundation/pathos
+pycurl
+ipcalc
+
