@@ -18,7 +18,6 @@ class HostAction:
                 for j in self.HostInformation.getInfoForInterface(i):
 
                     iface = i
-                    self.HostInformation.ifaceUsed = i
                     ip = j['addr']
                     netmask =j['netmask']
                     cidr = self.HostInformation.getCidrFromIp(netmask)

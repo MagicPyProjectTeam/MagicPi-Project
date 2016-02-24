@@ -8,20 +8,17 @@ class BDDModel:
         self.conn.row_factory = sqlite3.Row
         self.c = self.conn.cursor()
 
-
-    # Check if an address already exist in the Scan table
+    # Check if an IP address already exist in the Scan table
     def checkIP(self, ip):
 
         self.c.execute('SELECT count (*) from Scan WHERE IP = "%s"' % ip)
         nb = (self.c.fetchone()[0])
-
-
         if nb == 1:
             return True
         elif nb == 0:
             return False
 
-    # Check if a SSID address already exist in the Networks table
+    # Check if a Interface already exist in the HostInfo table
     def checkIface(self, iface):
 
         c = self.c
@@ -33,14 +30,14 @@ class BDDModel:
             return False
 
     # Insert in Database outputs from Scan action
-    def scanInsertBDD(self, ip, mac, const, iface):
+    def scanInsertBDD(self, ip, mac, const):
 
         c = self.c
         if self.checkIP(ip):
-            c.execute('UPDATE Scan SET MAC="%s", CONST="%s" WHERE IP= "%s", INTERFACE="%s"' % (mac, const, ip, iface))
+            c.execute('UPDATE Scan SET MAC="%s", CONST="%s" WHERE IP= "%s"' % (mac, const, ip))
             # print("   --> Updating Database...")
         else:
-            c.execute('INSERT INTO Scan (IP, MAC, CONST, INTERFACE) VALUES ("%s", "%s", "%s", "%s")' % (ip, mac, const, iface))
+            c.execute('INSERT INTO Scan (IP, MAC, CONST) VALUES ("%s", "%s", "%s")' % (ip, mac, const))
             # print("   --> Adding to Database...")
         self.conn.commit()
 
@@ -54,6 +51,7 @@ class BDDModel:
             c.execute('UPDATE Scan SET PORTS="%s", ZOMBIE=1 WHERE IP="%s"' % (openports, ip))
         self.conn.commit()
 
+    # Insert in Database information from HostInformation model
     def hostInsertBDD(self, iface, ip, netmask, cidr, subnet, broadcast, gateway, pubip):
         if self.checkIface(iface):
             self.c.execute('UPDATE HostInfo SET '
@@ -64,18 +62,31 @@ class BDDModel:
                            ' VALUES ("%s", "None", "%s", "%s", "%s", "%s", "%s", "%s")' % (iface, subnet, netmask, cidr, broadcast, gateway, pubip))
         self.conn.commit()
 
+    '''
+    Return Dictionary (with Primary key for Index) of dictionaries (With Column name for Index) with Table as parameter
+    Calling example : macAddr = selectFromBDD('Scan')['192.168.1.1']['MAC']
+    '''
     def selectFromBDD(self, table,):
-        scanList = list()
-        hostList = list()
-        self.c.execute('select * from scan')
-        scan = self.c.fetchall()
-        for i in scan:
-            dict = {'IP', 'MAC', 'CONST', 'PORTS', 'ZOMBIE', 'INTERFACE'}
 
+        listSelectDict = dict()
+        self.c.execute('select * from "%s"' % table)
+        select = self.c.fetchall()
+        for row in select:
+            selectDict = dict()
+            for field in row.keys():
+                selectDict[field] = str(row[field])
+            try:
+                listSelectDict[str(row['IP'])] = selectDict
+            except:
+                listSelectDict[str(row['INTERFACE'])] = selectDict
+        return listSelectDict
 
+    # Return first active Interface (which has a Gateway)
+    def activeInterface(self):
+        self.c.execute('select INTERFACE from HostInfo where Gateway != "None"')
+        return str(self.c.fetchone()[0])
 
-        return obj[item]
-
+    # Clean all entries of Database (not used yet)
     def cleanBDD(self):
 
         self.c.execute('DELETE FROM Scan')

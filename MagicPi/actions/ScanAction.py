@@ -4,28 +4,31 @@ class ScanAction:
     ARPmodel = None
     TCPmodel = None
     BDDmodel = None
-    HostInformation = None
 
     def __init__(self,Environement):
         self.env = Environement
         self.ARPmodel = self.env.getModel('ARP')
         self.TCPmodel = self.env.getModel('TCP')
         self.BDDmodel = self.env.getModel('BDD')
-        self.HostInformation = self.env.getModel('HostInformation')
 
     def run(self):
-        print('\033[1m' + "--------------------------------------------\n[*] ScanAction Running, It will perform ARP ping scan, then for each host, it will scan range 1-1024 tcp ports (SYN_SCAN)\n" + '\033[0m')
+
+        print('\033[1m' + "--------------------------------------------\n"
+                          "[*] ScanAction Running, It will perform ARP ping scan, then for each host,"
+                          " it will scan range 1-1024 tcp ports (SYN_SCAN)\n" + '\033[0m')
         
         print("[*] ARP ping begin..")
-        hosts = self.ARPmodel.ARP_Ping('wlp1s0', '192.168.1.0/24')
+        iface = self.BDDmodel.activeInterface()
+        subCIDR = self.BDDmodel.selectFromBDD('HostInfo')[iface]['SUBNET']+self.BDDmodel.selectFromBDD('HostInfo')[iface]['CIDR']
+        hosts = self.ARPmodel.ARP_Ping(iface, subCIDR)
         
         print ("[*] ARP ping done!, discovered %d host(s) !" % len(hosts))
         for host in hosts:
             print ("\n[*] Found Host=%s, MAC=%s, Constructor=%s" % (host["ip"],host["mac"],host["const"]))
-            try:
-                self.BDDmodel.scanInsertBDD(str(host["ip"]), str(host["mac"]), str(host["const"]))
-            except:
-                print("Failed to insert into BDD...")
+            #try:
+            self.BDDmodel.scanInsertBDD(str(host["ip"]), str(host["mac"]), str(host["const"]))
+            #except:
+            #    print("Failed to insert into BDD...")
         
         print ("\n\n[*] IP ID Seq Scan begin..")
         for host in hosts:

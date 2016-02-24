@@ -2,7 +2,6 @@ class HostInformation:
     env = None
     interfaces = {}
     netIfaces = None
-    ifaceUsed = None
 
     # Constructeur de la classe, on appel loadInformation
     def __init__(self,Environement):
@@ -51,10 +50,11 @@ class HostInformation:
         except:
             return False
 
-    #retourne le CIDR
+    # Retourne le CIDR
     def getCidrFromIp(self, ip):
         return '/'+str('.'.join([bin(int(x)+256)[3:] for x in ip.split('.')]).count('1'));
 
+    # Retourne l'adresse reseau (subnet)
     def getSubnet(self, ip, cidr):
         ipCalc = self.env.getImport('ipcalc')
         return str(ipCalc.Network('%s%s' % (ip, cidr)).network())
