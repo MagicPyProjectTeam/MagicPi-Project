@@ -30,14 +30,14 @@ class BDDModel:
             return False
 
     # Insert in Database outputs from Scan action
-    def scanInsertBDD(self, ip, mac, const):
+    def scanInsertBDD(self, ip, mac, const, iface):
 
         c = self.c
         if self.checkIP(ip):
-            c.execute('UPDATE Scan SET MAC="%s", CONST="%s" WHERE IP= "%s"' % (mac, const, ip))
+            c.execute('UPDATE Scan SET MAC="%s", CONST="%s", INTERFACE="%s" WHERE IP= "%s"' % (mac, const, iface, ip))
             # print("   --> Updating Database...")
         else:
-            c.execute('INSERT INTO Scan (IP, MAC, CONST) VALUES ("%s", "%s", "%s")' % (ip, mac, const))
+            c.execute('INSERT INTO Scan (IP, MAC, CONST, INTERFACE) VALUES ("%s", "%s", "%s", "%s")' % (ip, mac, const, iface))
             # print("   --> Adding to Database...")
         self.conn.commit()
 
