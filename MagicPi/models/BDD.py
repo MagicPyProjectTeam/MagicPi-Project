@@ -1,4 +1,7 @@
 import sqlite3
+import os
+
+
 class BDDModel:
 
     # Class constructor & BDD connection
@@ -21,6 +24,12 @@ class BDDModel:
     # Check if a Interface already exist in the HostInfo table
     def checkIface(self, iface):
 
+        for row in self.selectFromBDD('HostInfo').keys():
+            if self.selectFromBDD('HostInfo')[row]['INTERFACE']:
+                return True
+            else:
+                return False
+        '''
         c = self.c
         c.execute('SELECT count(*) FROM HostInfo WHERE INTERFACE = "%s"' % iface)
         nb = (c.fetchone()[0])
@@ -28,6 +37,7 @@ class BDDModel:
             return True
         elif nb == 0:
             return False
+        '''
 
     # Insert in Database outputs from Scan action
     def scanInsertBDD(self, ip, mac, const, iface):
@@ -83,8 +93,24 @@ class BDDModel:
 
     # Return first active Interface (which has a Gateway)
     def activeInterface(self):
+
         self.c.execute('select INTERFACE from HostInfo where Gateway != "None"')
         return str(self.c.fetchone()[0])
+
+    # If BDD already exist it will remove it and create a new one
+    def createBDD(self):
+        if os.path.isfile('mpp.db'):
+            self.conn.close()
+            os.remove('mpp.db')
+            print('[*] Removing old Database...')
+        self.conn = sqlite3.connect('mpp.db')
+        self.conn.row_factory = sqlite3.Row
+        self.c = self.conn.cursor()
+        self.c.execute("create table Scan(IP TEXT,MAC TEXT,CONST TEXT,PORTS TEXT,ZOMBIE BOOLEAN NOT NULL DEFAULT 0,INTERFACE TEXT,FOREIGN KEY (INTERFACE) REFERENCES HostInfo(INTERFACE),PRIMARY KEY (IP));")
+        self.c.execute("create table HostInfo(INTERFACE TEXT,SSID TEXT,SUBNET TEXT,MASK TEXT ,CIDR TEXT,BROADCAST,GATEWAY TEXT,PUBIP,PRIMARY KEY(INTERFACE));")
+        self.conn.commit()
+
+        print('[*] Creating Databse...\n')
 
     # Clean all entries of Database (not used yet)
     def cleanBDD(self):

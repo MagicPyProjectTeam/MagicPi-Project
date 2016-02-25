@@ -10,8 +10,7 @@ class HostAction:
         self.BDDmodel = self.env.getModel('BDD')
 
     def run(self):
-        print('\033[1m' + '--------------------------------------------\n'
-                          '[*] HostAction running. It will get All interfaces information.\n' + '\033[0m')
+        print('\033[1m' + '--------------------------------------------\n[*] HostAction running. It will get All interfaces information.\n' + '\033[0m')
 
         for i in self.HostInformation.interfaces:
             if self.HostInformation.getGateWayForInterface(i):
@@ -34,7 +33,4 @@ class HostAction:
                     print('[*] Public IP : %s' % pubip)
 
                     self.BDDmodel.hostInsertBDD(iface, ip, netmask, cidr, subnet, broadcast, gateway, pubip)
-
-
-
 

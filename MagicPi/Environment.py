@@ -14,7 +14,7 @@ class Environment:
     debug = False;
 
     def __init__(self):
-        print ("[*] Environment loaded!\n")
+        print ("\n[*] Environment loaded!\n")
 
     # initialise les classes statiques
     def initializeStatic(self,staticName):
