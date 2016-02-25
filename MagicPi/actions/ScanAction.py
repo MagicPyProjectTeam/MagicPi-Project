@@ -20,7 +20,7 @@ class ScanAction:
         print("[*] ARP ping begin..")
         iface = self.BDDmodel.activeInterface()
         subCIDR = self.BDDmodel.selectFromBDD('HostInfo')[iface]['SUBNET']+self.BDDmodel.selectFromBDD('HostInfo')[iface]['CIDR']
-        hosts = self.ARPmodel.ARP_Ping(iface, '192.168.1.0/24')
+        hosts = self.ARPmodel.ARP_Ping(iface, subCIDR)
         
         print ("[*] ARP ping done!, discovered %d host(s) !" % len(hosts))
         for host in hosts:
