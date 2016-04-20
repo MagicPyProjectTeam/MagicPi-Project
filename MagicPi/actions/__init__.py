@@ -1,3 +1,3 @@
-import CreateBDDAction, HostAction, ScanAction, SelectAction, dhcpConfigAction
+import CreateBDDAction, HostAction, ScanAction, SelectAction, dhcpConfigAction, DeleteBDDAction
 
-__all__ = [CreateBDDAction, HostAction, ScanAction, SelectAction, dhcpConfigAction, ];
+__all__ = [CreateBDDAction, HostAction, ScanAction, SelectAction, dhcpConfigAction, DeleteBDDAction ];

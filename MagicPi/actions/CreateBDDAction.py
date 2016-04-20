@@ -12,4 +12,7 @@ class createBDDAction:
     def run(self):
         print('\033[1m' + '--------------------------------------------\n'
                           '[*] CreateBDDAction running. It will create the database.\n' + '\033[0m')
-        self.BDDmodel.createBDD()
+        try:
+            self.BDDmodel.createBDD()
+        except:
+            print('\033[1m' + '\033[91m' + '[x] Failed to create database...' + '\033[0m')
