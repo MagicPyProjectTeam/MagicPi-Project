@@ -7,6 +7,8 @@ class BDDModel:
 
     # Class constructor & BDD connection
     def __init__(self, Environement):
+        if not os.path.exists('databases'):
+            os.mkdir('databases')
         self.env = Environement
         self.conn = sqlite3.connect('databases/mpp.db')
         self.conn.row_factory = sqlite3.Row
