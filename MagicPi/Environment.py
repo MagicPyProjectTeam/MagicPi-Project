@@ -13,6 +13,9 @@ class Environment:
     # Variables outil
     debug = False;
 
+    # List of actions in the rifht order
+    actionsList=['CreateBDDAction', 'HostAction', 'ScanAction', 'SelectAction', 'DeleteBDDAction']
+
     def __init__(self):
         print ("\n[*] Environment loaded!\n")
 
@@ -58,8 +61,7 @@ class Environment:
                     print(obj)
                 print name
                 memberDict[name] = obj
-        list=['CreateBDDAction', 'HostAction', 'ScanAction', 'SelectAction', 'DeleteBDDAction']
-        for module in list:
+        for module in self.actionsList:
             self.runActions(memberDict[module])
 
     # On instancie une premiere fois les classes statiques
