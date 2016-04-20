@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import datetime
 
 
 class BDDModel:
@@ -7,7 +8,7 @@ class BDDModel:
     # Class constructor & BDD connection
     def __init__(self, Environement):
         self.env = Environement
-        self.conn = sqlite3.connect('mpp.db')
+        self.conn = sqlite3.connect('databases/mpp.db')
         self.conn.row_factory = sqlite3.Row
         self.c = self.conn.cursor()
 
@@ -99,11 +100,8 @@ class BDDModel:
 
     # If BDD already exist it will remove it and create a new one
     def createBDD(self):
-        if os.path.isfile('mpp.db'):
-            self.conn.close()
-            os.remove('mpp.db')
-            print('[*] Removing old Database...')
-        self.conn = sqlite3.connect('mpp.db')
+        self.removeBDD('databases/mpp.db')
+        self.conn = sqlite3.connect('databases/mpp.db')
         self.conn.row_factory = sqlite3.Row
         self.c = self.conn.cursor()
         self.c.execute("create table Scan(IP TEXT,MAC TEXT,CONST TEXT,PORTS TEXT,ZOMBIE BOOLEAN NOT NULL DEFAULT 0,INTERFACE TEXT,FOREIGN KEY (INTERFACE) REFERENCES HostInfo(INTERFACE),PRIMARY KEY (IP));")
@@ -111,6 +109,16 @@ class BDDModel:
         self.conn.commit()
 
         print('[*] Creating Databse...\n')
+
+    def exportBDD(self, sourceFile, outputFile):
+        os.rename(sourceFile, outputFile)
+        print('[*] The database was exported to database folder')
+
+    def removeBDD(self, path):
+        if os.path.isfile(path):
+            self.conn.close()
+            os.remove(path)
+            print('[*] Removing old Database...')
 
     # Clean all entries of Database (not used yet)
     def cleanBDD(self):

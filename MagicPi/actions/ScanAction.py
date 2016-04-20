@@ -20,15 +20,15 @@ class ScanAction:
         print("[*] ARP ping begin..")
         iface = self.BDDmodel.activeInterface()
         subCIDR = self.BDDmodel.selectFromBDD('HostInfo')[iface]['SUBNET']+self.BDDmodel.selectFromBDD('HostInfo')[iface]['CIDR']
-        hosts = self.ARPmodel.ARP_Ping(iface, subCIDR)
-        
+        hosts = self.ARPmodel.ARP_Ping(iface, '10.75.1.0/24')
+
         print ("[*] ARP ping done!, discovered %d host(s) !" % len(hosts))
         for host in hosts:
             print ("\n[*] Found Host=%s, MAC=%s, Constructor=%s" % (host["ip"],host["mac"],host["const"]))
             try:
                 self.BDDmodel.scanInsertBDD(str(host["ip"]), str(host["mac"]), str(host["const"]), iface)
             except:
-                print("Failed to insert into BDD...")
+                print('\033[1m' + '\033[91m' + '[x] Failed to insert into BDD...' + '\033[0m')
         
         print ("\n\n[*] IP ID Seq Scan begin..")
         for host in hosts:
@@ -47,7 +47,7 @@ class ScanAction:
                 try:
                     self.BDDmodel.portInsertBDD(openports, host["ip"])
                 except:
-                    print("Failed to insert into BDD...")
+                    print('\033[1m' + '\033[91m' + '[x] Failed to insert into BDD...' + '\033[0m')
 
             print("[*] Host:%s scan done!" % host["ip"])
 

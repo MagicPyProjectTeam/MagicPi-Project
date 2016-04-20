@@ -38,9 +38,8 @@ class Environment:
             self.importList[importName] = import_module(importName)
         return self.importList[importName]
 
-
     # Methods : Execute l'action run des classes du module
-    def runActions(self,module):
+    def runActions(self, module):
         for name, obj in inspect.getmembers(module):
             if inspect.isclass(obj):
                 if self.debug:
@@ -50,21 +49,21 @@ class Environment:
                 actionClass.run()
 
     # Appel la methode runActions pour chaque module de l'import
-    def launchApplication(self,import_name):
+    def launchApplication(self, import_name):
+        memberDict = dict()
         for name, obj in inspect.getmembers(import_name):
             if inspect.ismodule(obj):
-                if(self.debug):
+                if self.debug:
                     print ("Lancement de runActions pour :")
                     print(obj)
-                self.runActions(obj)
+                print name
+                memberDict[name] = obj
+        list=['CreateBDDAction', 'HostAction', 'ScanAction', 'SelectAction', 'DeleteBDDAction']
+        for module in list:
+            self.runActions(memberDict[module])
 
     # On instancie une premiere fois les classes statiques
     def setStatics(self):
-        list=[
-            'HostInformation',
-            'ARP',
-            'TCP',
-            'BDD'
-            ]
-        for model in list :
+        list=['HostInformation', 'ARP', 'TCP', 'BDD']
+        for model in list:
             self.initializeStatic(model)

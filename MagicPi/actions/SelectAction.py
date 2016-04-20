@@ -13,5 +13,4 @@ class SelectAction:
                           '[*] SelectAction running. It will print All zombies found.\n' + '\033[0m')
         for row in self.BDDmodel.selectFromBDD('scan').keys():
             if self.BDDmodel.selectFromBDD('scan')[row]['PORTS'] != 'None':
-                print("Host ; %s is a zombie. Open ports : %s" % (self.BDDmodel.selectFromBDD('scan')[row]['IP'], self.BDDmodel.selectFromBDD('scan')[row]['PORTS']))
-        print('\n')
+                print('\033[1m' + "[*] Host: %s is a zombie - Open ports : %s\n" % (self.BDDmodel.selectFromBDD('scan')[row]['IP'], self.BDDmodel.selectFromBDD('scan')[row]['PORTS']) + '\033[1m')
