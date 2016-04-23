@@ -14,7 +14,7 @@ class Environment:
     debug = False;
 
     # List of actions in the rifht order
-    actionsList=['CreateBDDAction', 'HostAction', 'ScanAction', 'SelectAction', 'DeleteBDDAction']
+    actionsList=['WatcherAction','CreateBDDAction', 'HostAction', 'ScanAction', 'SelectAction', 'dhcpConfigAction', 'DeleteBDDAction']
 
     def __init__(self):
         print ("\n[*] Environment loaded!\n")
@@ -59,7 +59,6 @@ class Environment:
                 if self.debug:
                     print ("Lancement de runActions pour :")
                     print(obj)
-                print name
                 memberDict[name] = obj
         for module in self.actionsList:
             self.runActions(memberDict[module])
