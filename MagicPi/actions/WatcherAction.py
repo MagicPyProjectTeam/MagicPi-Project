@@ -20,14 +20,9 @@ class WatcherAction:
         networkRef = dict(modelHostInfo.interfaces) # dict pour faire une copie
 
         # On verifie toutes les 20 secondes que rien n'a change dans le network
-        i = 3;
         while (modelHostInfo.interfaces == networkRef) :
             time.sleep(20);
             modelHostInfo.loadInformation();
-            if (i == 3 ) :
-                print "[*] Watcher still watching..."
-                i=0;
-            i = i+1;
 
         # Vu que ca a ete modifie, on relance l'appli
         print "\n\n\t<==================>\n\n Watcher : Les infos ont change, on relance l'application"
