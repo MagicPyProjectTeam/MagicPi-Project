@@ -37,6 +37,8 @@ class HostInformation:
     # Methode appele a la construction, instancie les parametres de l'interface
     def loadInformation(self):
         for interface_en_cours in self.netIfaces.interfaces() :
+            if self.env.isDebug() :
+                print "[*] loading information for interface "+str(interface_en_cours)
             self.interfaces[interface_en_cours] = self.netIfaces.ifaddresses(interface_en_cours);
 
     # Retourne la liste des interfaces

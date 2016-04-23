@@ -48,10 +48,12 @@ class BDDModel:
         c = self.c
         if self.checkIP(ip):
             c.execute('UPDATE Scan SET MAC="%s", CONST="%s", INTERFACE="%s" WHERE IP= "%s"' % (mac, const, iface, ip))
-            # print("   --> Updating Database...")
+            if (self.env.isDebug()) :
+                print("   --> Updating Database...")
         else:
             c.execute('INSERT INTO Scan (IP, MAC, CONST, INTERFACE) VALUES ("%s", "%s", "%s", "%s")' % (ip, mac, const, iface))
-            # print("   --> Adding to Database...")
+            if (self.env.isDebug()) :
+                print("   --> Adding to Database...")
         self.conn.commit()
 
     # Insert in Database open ports and Zombie status
@@ -110,17 +112,20 @@ class BDDModel:
         self.c.execute("create table HostInfo(INTERFACE TEXT,SSID TEXT,SUBNET TEXT,MASK TEXT ,CIDR TEXT,BROADCAST,GATEWAY TEXT,PUBIP,PRIMARY KEY(INTERFACE));")
         self.conn.commit()
 
-        print('[*] Creating Databse...\n')
+        if (self.env.isDebug()) :
+            print('[*] Creating Databse...\n')
 
     def exportBDD(self, sourceFile, outputFile):
         os.rename(sourceFile, outputFile)
-        print('[*] The database was exported to database folder')
+        if (self.env.isDebug()) :
+            print('[*] The database was exported to database folder')
 
     def removeBDD(self, path):
         if os.path.isfile(path):
             self.conn.close()
             os.remove(path)
-            print('[*] Removing old Database...')
+            if (self.env.isDebug()) :
+                print('[*] Removing old Database...')
 
     # Clean all entries of Database (not used yet)
     def cleanBDD(self):
