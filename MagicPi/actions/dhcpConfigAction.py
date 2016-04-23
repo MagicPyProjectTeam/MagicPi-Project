@@ -10,6 +10,8 @@ class dhcpConfigAction:
     # Cree le fichier de configuration DHCP
     # Attention, le fichier dhcpd.conf dois exister (initialise a l'installation de isc-dhcp-server)
     def run(self):
+        print('\033[1m' + "--------------------------------------------\n"
+                  "[*] Dhcp configuration is running\n" + '\033[0m')
         modelDhcpConfig = self.env.getModel('DhcpConfig');
 
         ### En travail
