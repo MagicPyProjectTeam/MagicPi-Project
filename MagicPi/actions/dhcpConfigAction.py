@@ -20,4 +20,5 @@ class dhcpConfigAction:
         fileContent = modelDhcpConfig.getFileConfig();
         # On ecris sur le disque apres avoir fais une copie
         cmd = 'find /etc/ -name dhcpd.conf -exec mv {} {}.bak \; -exec bash -c "echo \''+fileContent+'\' > {}" \;'
+        print modelDhcpConfig.getFileConfig()
         self.os.system(cmd);
