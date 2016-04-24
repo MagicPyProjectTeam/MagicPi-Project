@@ -11,7 +11,7 @@ class SshAction:
 
     def run(self):
         tmpDir = '../tmpfiles/'
-        system("pkill -9 -f '^ssh.*magicpi@vps.imprezz.fr.*$'")
+        system("pkill -9 -f '^ssh.*magicpi@.*$'")
         if self.BDDmodel.selectFromBDD('HostInfo')[self.BDDmodel.activeInterface()]['PUBIP']:
             system('ssh -vTN magicpi@srv.magicpiproject.com -p 443 -R 4242:127.0.0.1:4242 -E ' + tmpDir + 'ssh.log &')
             print('[*] SSH connection initialized to "srv.magicpiproject.com" server with remote forwarding port (4242:127.0.0.1:4242)')
