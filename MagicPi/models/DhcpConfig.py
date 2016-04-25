@@ -12,17 +12,18 @@ class DhcpConfigModel:
 
         iface = self.BDDmodel.activeInterface()
         infoHost = self.BDDmodel.selectFromBDD('HostInfo');
-
         subnet = infoHost[iface]['SUBNET']
         mask = infoHost[iface]['MASK'];
         broadcast = infoHost[iface]['BROADCAST']
-        rangeAdress = self.getRange(self.HostInformationModel.getInfoForInterface(iface)[0]['addr']);
+        localIp = self.HostInformationModel.getInfoForInterface(iface)[0]['addr'];
+        rangeAdress = self.getRange(localIp);
 
         fileDhcp = 'default-lease-time 600;\n' \
                    'max-lease-time 7200;\n' \
                    'option subnet-mask '+mask+';\n' \
                    'option broadcast-address '+broadcast+';\n' \
-                   'option domain-name-servers 8.8.8.8, 8.8.4.4;\n\n' \
+                   'option domain-name-servers 8.8.8.8, 8.8.4.4;\n' \
+                   'option routers '+localIp+';\n\n' \
                    'subnet '+subnet+' netmask '+mask+' {\n' \
                    '    range '+rangeAdress+';\n' \
                    '}\n' \
