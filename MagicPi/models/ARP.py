@@ -38,7 +38,7 @@ class ARPModel:
             array.append(dico)
         return array
 
-    def ARP_Gratious(self, interface):
+    def ARP_Gratious(self, interface, ip):
         # import scapy
         scap = self.env.getImport('scapy.all')
         scap.conf.verb = 0
