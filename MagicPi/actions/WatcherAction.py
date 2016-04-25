@@ -8,6 +8,7 @@ class WatcherAction:
 
     def __init__(self, Environement):
         self.environement = Environement;
+        os.system('pkill')
 
     def run(self):
         pool = mp.ProcessingPool(nodes=1)
