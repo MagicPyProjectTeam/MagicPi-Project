@@ -14,7 +14,7 @@ class Environment:
     debug = False;
 
     # List of actions in the rifht order
-    actionsList=['WatcherAction','CreateBDDAction', 'HostAction', 'ScanAction', 'SelectAction', 'dhcpConfigAction', 'DeleteBDDAction']
+    actionsList=['WatcherAction','CreateBDDAction', 'HostAction', 'SshAction', 'ScanAction', 'SelectAction', 'dhcpConfigAction', 'DeleteBDDAction']
 
     def __init__(self):
         print ("\n[*] Environment loaded !\n")
