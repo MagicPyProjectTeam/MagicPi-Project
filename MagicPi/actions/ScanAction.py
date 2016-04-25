@@ -33,24 +33,26 @@ class ScanAction:
         print ("\n\n[*] IP ID Seq Scan begin..")
         for host in hosts:
             print("\n[*] Scanning host:%s" % host["ip"])
-            
-            if self.TCPmodel.ipid_seq(host["ip"]):
 
+            zombie = 0
+            openports = ''
+            if self.TCPmodel.ipid_seq(host["ip"]):
+                zombie = 1
                 print("[*] IP ID Seq Incremental Detected!")
             
-            ports = self.TCPmodel.TCP_Syn_Scan(host["ip"], range(1, 1025))
-            openports = ''
+            ports = self.TCPmodel.TCP_Syn_Scan(host["ip"], range(1, 1024))
+
             for openp in filter(lambda i: i[1] == True, ports):
                 openports += str(openp[0]) + ','
                 print("[*] Discover open port: {} in host: {}".format(openp[0], host["ip"]))
             openports = openports[:-1]
             try:
-                self.BDDmodel.portInsertBDD(openports, host["ip"])
+                self.BDDmodel.portInsertBDD(openports, host["ip"], zombie)
             except:
                 print('\033[1m' + '\033[91m' + '[x] Failed to insert into BDD...' + '\033[0m')
 
             print("[*] Host:%s scan done!" % host["ip"])
 
-        print("[*] IP ID Seq Scan done!")
+        print("\n[*] IP ID Seq Scan done!")
 
         print("[*] ScanAction Finished! GoodBye Master!\n")

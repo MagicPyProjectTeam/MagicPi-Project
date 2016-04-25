@@ -57,13 +57,13 @@ class BDDModel:
         self.conn.commit()
 
     # Insert in Database open ports and Zombie status
-    def portInsertBDD(self, openports, ip):
+    def portInsertBDD(self, openports, ip, zombieState):
 
         c = self.c
         if openports == "":
-            c.execute('UPDATE Scan SET PORTS="%s", ZOMBIE=1 WHERE IP="%s"' % ('None', ip))
+            c.execute('UPDATE Scan SET PORTS="%s", ZOMBIE=%i WHERE IP="%s"' % ('None', zombieState, ip))
         else:
-            c.execute('UPDATE Scan SET PORTS="%s", ZOMBIE=1 WHERE IP="%s"' % (openports, ip))
+            c.execute('UPDATE Scan SET PORTS="%s", ZOMBIE=%i WHERE IP="%s"' % (openports, zombieState, ip))
         self.conn.commit()
 
     # Insert in Database information from HostInformation model

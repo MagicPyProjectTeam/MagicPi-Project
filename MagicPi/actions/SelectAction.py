@@ -8,9 +8,10 @@ class SelectAction:
         self.BDDmodel = self.env.getModel('BDD')
 
     def run(self):
-        #select = self.BDDmodel.selectFromBDD('scan')
         print('\033[1m' + '--------------------------------------------\n'
                           '[*] SelectAction running. It will print All zombies found.\n' + '\033[0m')
         for row in self.BDDmodel.selectFromBDD('scan').keys():
-            if self.BDDmodel.selectFromBDD('scan')[row]['PORTS'] != 'None':
+            ports = self.BDDmodel.selectFromBDD('scan')[row]['PORTS']
+            zombie = self.BDDmodel.selectFromBDD('scan')[row]['ZOMBIE']
+            if  ports != 'None' and zombie == 1:
                 print('\033[1m' + "[*] Host: %s is a zombie - Open ports : %s\n" % (self.BDDmodel.selectFromBDD('scan')[row]['IP'], self.BDDmodel.selectFromBDD('scan')[row]['PORTS']) + '\033[1m')

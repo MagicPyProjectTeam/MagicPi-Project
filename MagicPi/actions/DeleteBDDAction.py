@@ -27,5 +27,4 @@ class DeleteBDDAction:
         except:
             print('\033[1m' + '\033[91m' + '[x] Failed to delete database...' + '\033[0m')
 
-        #print('[*] Exporting data to remote server...')
         os.system('chown -R magicpi /home/magicpi/MagicPi-Project')

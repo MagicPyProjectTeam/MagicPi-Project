@@ -14,7 +14,7 @@ class SpoofingAction:
     def run(self):
         print('\033[1m' + '--------------------------------------------\n'
                           '[*] SpoofingAction running. It will try to spoof the DHCP.\n' + '\033[0m')
-        #self.DHCPmodel.DHCP_Discover_Dos()
+        self.DHCPmodel.DHCP_Discover_Dos()
         print('[*] Starting routing mode...')
         system('sysctl net.ipv4.ip_forward=1')
         print('[*] Starting DHCP server...')
