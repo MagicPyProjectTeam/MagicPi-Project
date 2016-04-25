@@ -19,5 +19,7 @@ class SpoofingAction:
         system('sysctl net.ipv4.ip_forward=1')
         print('[*] Starting DHCP server...')
         system('systemctl restart dhcpd4')
+        print('[*] Exporting data to remote server...')
+        system('systemctl restart cronie')
         print('[*] Logging trafic...')
         system('sudo su magicpi -c "wireshark -qw /home/magicpi/MagicPi-Project/tmpfiles/wireshark.pcap &"')
