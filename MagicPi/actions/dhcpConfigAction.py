@@ -12,12 +12,12 @@ class dhcpConfigAction:
     def run(self):
         print('\033[1m' + "--------------------------------------------\n"
                   "[*] Dhcp configuration is running\n" + '\033[0m')
-        modelDhcpConfig = self.env.getModel('DhcpConfig');
+        modelDhcpConfig = self.env.getModel('DhcpConfig')
 
         ### En travail
         #
         # On recupere le fichier
-        fileContent = modelDhcpConfig.getFileConfig();
+        fileContent = modelDhcpConfig.getFileConfig()
         # On ecris sur le disque apres avoir fais une copie
         cmd = 'find /etc/ -name dhcpd.conf -exec mv {} {}.bak \; -exec bash -c "echo \''+fileContent+'\' > {}" \;'
-        self.os.system(cmd);
+        self.os.system(cmd)

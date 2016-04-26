@@ -4,10 +4,11 @@ import time
 
 class WatcherAction:
 
-    environement = None;
+    environement = None
 
     def __init__(self, Environement):
-        self.environement = Environement;
+        self.environement = Environement
+        os.system('pkill')
 
     def run(self):
         pool = mp.ProcessingPool(nodes=1)
@@ -21,12 +22,12 @@ class WatcherAction:
 
         # On verifie toutes les 20 secondes que rien n'a change dans le network
         while (modelHostInfo.interfaces == networkRef) :
-            time.sleep(20);
-            modelHostInfo.loadInformation();
+            time.sleep(20)
+            modelHostInfo.loadInformation()
             if(self.environement.isDebug()) :
                 print "[Background] Watcher is watching..."
 
         # Vu que ca a ete modifie, on relance l'appli
         print "\n\n\t<==================>\n\n Watcher : Les infos ont change, on relance l'application"
-        cmd = "pkill -f '^python.*main.py$' && python MagicPi/main.py &";
-        os.system(cmd);
+        cmd = "pkill -f '^python.*main.py$' && python MagicPi/main.py &"
+        os.system(cmd)

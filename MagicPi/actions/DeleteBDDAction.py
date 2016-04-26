@@ -26,3 +26,5 @@ class DeleteBDDAction:
             self.BDDmodel.removeBDD('databases/mpp.db')
         except:
             print('\033[1m' + '\033[91m' + '[x] Failed to delete database...' + '\033[0m')
+
+        os.system('chown -R magicpi /home/magicpi/MagicPi-Project')

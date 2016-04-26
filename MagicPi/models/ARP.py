@@ -37,3 +37,13 @@ class ARPModel:
             dico["const"] = "(%s)" % vals[mac] if mac in vals else 'not found'
             array.append(dico)
         return array
+
+    def ARP_Gratious(self, interface, ip):
+        # import scapy
+        scap = self.env.getImport('scapy.all')
+        scap.conf.verb = 0
+
+        #build and send gratious arp
+        macaddr = scap.RandMac()
+        pkt = scap.Ether(src=macaddr,dst="ff:ff:ff:ff:ff:ff")/scap.ARP(hwsrc=macaddr,psrc=ip,hwdst="00:00:00:00:00:00",pdst=ip)
+        scap.sendp(pkt, iface=interface)
