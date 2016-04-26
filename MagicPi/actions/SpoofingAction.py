@@ -8,7 +8,7 @@ class SpoofingAction:
 
     def __init__(self,Environement):
         self.env = Environement
-        self.DHCPModel = self.env.getImport('DHCP')
+        self.DHCPModel = self.env.getModel('DHCP')
 
     def run(self):
         print('\033[1m' + '[*] SpoofingAction running. It will try to spoof the DHCP.\n' + '\033[0m')
