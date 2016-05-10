@@ -1,23 +1,25 @@
 import models
 import inspect
+import os
 from importlib import import_module
 
 class Environment:
 
     # Classes statiques
-    statics = {};
+    statics = {}
 
     # Imports
-    importList = {};
+    importList = {}
 
     # Variables outil
-    debug = False;
+    debug = False
 
     # List of actions in the rifht order
     actionsList=['WatcherAction','CreateBDDAction', 'HostAction', 'SshAction', 'ScanAction', 'SelectAction', 'dhcpConfigAction', 'SpoofingAction', 'DeleteBDDAction']
 
     def __init__(self):
         print ("\n[*] Environment loaded !\n")
+        self.appDir = '/home/imprezz/PycharmProjects/MagicPi-Project/MagicPi/'
 
     # initialise les classes statiques
     def initializeStatic(self,staticName):
@@ -34,12 +36,12 @@ class Environment:
         modelClass = inspect.getmembers(getattr(models, modelName))[0][1]
         if self.debug :
             print ("[Env] Model loaded : "+modelName)
-        return modelClass(self);
+        return modelClass(self)
 
     def getImport(self,importName):
-        if not importName in self.importList.keys() :
+        if not importName in self.importList.keys():
             self.importList[importName] = import_module(importName)
-        if(self.isDebug()) :
+        if(self.isDebug()):
             print "[Env] Importing : "+str(importName)
         return self.importList[importName]
 

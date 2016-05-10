@@ -20,7 +20,7 @@ class ScanAction:
         print("[*] ARP ping begin..")
         iface = self.BDDmodel.activeInterface()
         subCIDR = self.BDDmodel.selectFromBDD('HostInfo')[iface]['SUBNET']+self.BDDmodel.selectFromBDD('HostInfo')[iface]['CIDR']
-        hosts = self.ARPmodel.ARP_Ping(iface, subCIDR)
+        hosts = self.ARPmodel.ARP_Ping(iface, '192.168.1.0/24')
 
         print ("[*] ARP ping done!, discovered %d host(s) !" % len(hosts))
         for host in hosts:
@@ -40,12 +40,12 @@ class ScanAction:
                 zombie = 1
                 print("[*] IP ID Seq Incremental Detected!")
             
-            ports = self.TCPmodel.TCP_Syn_Scan(host["ip"], range(1, 1024))
+                ports = self.TCPmodel.TCP_Syn_Scan(host["ip"], range(1, 1024))
 
-            for openp in filter(lambda i: i[1] == True, ports):
-                openports += str(openp[0]) + ','
-                print("[*] Discover open port: {} in host: {}".format(openp[0], host["ip"]))
-            openports = openports[:-1]
+                for openp in filter(lambda i: i[1] == True, ports):
+                    openports += str(openp[0]) + ','
+                    print("[*] Discover open port: {} in host: {}".format(openp[0], host["ip"]))
+                openports = openports[:-1]
             try:
                 self.BDDmodel.portInsertBDD(openports, host["ip"], zombie)
             except:

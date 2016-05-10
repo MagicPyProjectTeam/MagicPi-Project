@@ -1,5 +1,5 @@
 import pathos.multiprocessing as mp
-import os;
+import os
 import time
 
 class WatcherAction:
@@ -11,7 +11,7 @@ class WatcherAction:
 
     def run(self):
         pool = mp.ProcessingPool(nodes=1)
-        pool.amap(WatcherAction.asynchWatcher,[self])
+        pool.amap(WatcherAction.asynchWatcher, [self])
         print "[*] Watcher is running in background..."
 
     def asynchWatcher(self):
@@ -28,5 +28,5 @@ class WatcherAction:
 
         # Vu que ca a ete modifie, on relance l'appli
         print "\n\n\t<==================>\n\n Watcher : Les infos ont change, on relance l'application"
-        cmd = "pkill -f '^python.*main.py$' && python MagicPi/main.py &"
+        cmd = "pkill -f '^python.*main.py$' && python " + self.environement.appDir + "main.py &"
         os.system(cmd)

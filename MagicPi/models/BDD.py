@@ -7,10 +7,12 @@ class BDDModel:
 
     # Class constructor & BDD connection
     def __init__(self, Environement):
-        if not os.path.exists('databases'):
-            os.mkdir('databases')
         self.env = Environement
-        self.conn = sqlite3.connect('databases/mpp.db')
+        self.dbDir = self.env.appDir + 'databases/'
+        self.db = self.dbDir + 'mpp.db'
+        if not os.path.exists(self.dbDir):
+            os.mkdir(self.dbDir)
+        self.conn = sqlite3.connect(self.db)
         self.conn.row_factory = sqlite3.Row
         self.c = self.conn.cursor()
 
@@ -32,15 +34,6 @@ class BDDModel:
                 return True
             else:
                 return False
-        '''
-        c = self.c
-        c.execute('SELECT count(*) FROM HostInfo WHERE INTERFACE = "%s"' % iface)
-        nb = (c.fetchone()[0])
-        if nb == 1:
-            return True
-        elif nb == 0:
-            return False
-        '''
 
     # Insert in Database outputs from Scan action
     def scanInsertBDD(self, ip, mac, const, iface):
@@ -104,8 +97,8 @@ class BDDModel:
 
     # If BDD already exist it will remove it and create a new one
     def createBDD(self):
-        self.removeBDD('databases/mpp.db')
-        self.conn = sqlite3.connect('databases/mpp.db')
+        self.removeBDD(self.db)
+        self.conn = sqlite3.connect(self.db)
         self.conn.row_factory = sqlite3.Row
         self.c = self.conn.cursor()
         self.c.execute("create table Scan(IP TEXT,MAC TEXT,CONST TEXT,PORTS TEXT,ZOMBIE BOOLEAN NOT NULL DEFAULT 0,INTERFACE TEXT,FOREIGN KEY (INTERFACE) REFERENCES HostInfo(INTERFACE),PRIMARY KEY (IP));")

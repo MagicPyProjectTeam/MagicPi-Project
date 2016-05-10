@@ -1,3 +1,4 @@
+
 class HostInformation:
     env = None
     interfaces = {}
@@ -5,21 +6,21 @@ class HostInformation:
 
     # Constructeur de la classe, on appel loadInformation
     def __init__(self,Environement):
-        self.env = Environement;
+        self.env = Environement
         self.netIfaces = Environement.getImport("netifaces");
-        self.loadInformation();
+        self.loadInformation()
 
     # Recupere, si possible, l'ip publique lie a l'interface donnee
     def getPublicIp(self, interface):
         # On recupere les import
-        PyCurl = self.env.getImport('pycurl');
+        PyCurl = self.env.getImport('pycurl')
         stringIo = self.env.getImport('StringIO')
         # stringIO permettra a curl de stocker le resultat plutot que de l'afficher
         tmpStorage = stringIo.StringIO()
 
         # On intialise curl
-        curlConn = PyCurl.Curl();
-        curlConn.setopt(PyCurl.URL, '52.28.249.93/ip'); # retourne l'ip publique (ipinfo.io)
+        curlConn = PyCurl.Curl()
+        curlConn.setopt(PyCurl.URL, 'ipinfo.io/ip') # retourne l'ip publique (ipinfo.io)
         curlConn.setopt(PyCurl.CONNECTTIMEOUT, 5) # On met un timeout de 5 secondes
         curlConn.setopt(PyCurl.INTERFACE, interface) # On map avec l'interface
         curlConn.setopt(PyCurl.WRITEFUNCTION, tmpStorage.write) # On redirige le flux vers stringIO
